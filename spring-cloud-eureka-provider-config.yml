@@ -33,7 +33,7 @@ spring:
       stat-view-servlet.deny: 192.168.1.73
       stat-view-servlet.reset-enable: false
       #以下4项，将来上生产环境以后一定要改！！！！！一定要改！！！！！一定要改！！！！！
-      stat-view-servlet.url-pattern: "/druid/*"
+      stat-view-servlet.url-pattern: "/druid"
       stat-view-servlet.allow: "127.0.0.1, *"
       stat-view-servlet.login-username: admin
       stat-view-servlet.login-password: 123456

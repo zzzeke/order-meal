@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: spring-cloud-eureka-server
+
+eureka:
+  auth:
+    enable: true #开启认证
+    username: root #设置认证用户名
+    password: 123456 #设置认证密码
+  server:
+    eviction-interval-timer-in-ms: 60000 #驱逐下线服务的间隔时间
+    enable-self-preservation: ${EUREKA_ENABLE_SELF_PRESERVATION:false} #关闭eureka服务自我保护机制，使eviction-interval-timer-in-ms配置生效
+
+---
+spring:
+  profiles: eurekaserver01
+
+server:
+  port: 8761
+
+eureka:
+  instance:
+    hostname: eurekaserver01
+  client:
+    register-with-eureka: true #不把自己注册到eureka注册中心上, 配置集群时必须为true
+    fetch-registry: true #不从eureka上获取服务的注册信息，表示自己就是注册中心，不检索服务，配置集群时必须为true
+    service-url:
+      defaultZone: http://${eureka.auth.username}:${eureka.auth.password}@eurekaserver02:8762/eureka/ #设置与Eureka Server交互的地址，查询服务和注册服务依赖的地址
+
+---
+spring:
+  profiles: eurekaserver02
+
+server:
+  port: 8762
+
+eureka:
+  instance:
+    hostname: eurekaserver02
+  client:
+    register-with-eureka: true #不把自己注册到eureka注册中心上, 配置集群时必须为true
+    fetch-registry: true #不从eureka上获取服务的注册信息，表示自己就是注册中心，不检索服务，配置集群时必须为true
+    service-url:
+      defaultZone: http://${eureka.auth.username}:${eureka.auth.password}@eurekaserver01:8761/eureka/ #设置与Eureka Server交互的地址，查询服务和注册服务依赖的地址
+
+---

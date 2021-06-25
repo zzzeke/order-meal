@@ -1,0 +1,121 @@
+spring:
+  application:
+    name: eureka-provider
+  datasource:
+    #数据源基本配置
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/order_meal?serverTimezone=GMT&CharacterEncoding=utf-8&useSSL=false
+    type: com.alibaba.druid.pool.DruidDataSource
+    #数据源其他配置： Druid连接池的配置，包依赖：druid-spring-boot-starter
+    druid:
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,log4j2
+      maxPoolPreparedStatementPerConnectionSize: 20
+      useGlobalDataSourceStat: true
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # 以下全部配置代替DruidConfig配置类
+      web-stat-filter.enabled: true
+      web-stat-filter.url-pattern: "/*"
+      web-stat-filter.exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+      stat-view-servlet.deny: 192.168.1.73
+      stat-view-servlet.reset-enable: false
+      #以下4项，将来上生产环境以后一定要改！！！！！一定要改！！！！！一定要改！！！！！
+      stat-view-servlet.url-pattern: "/druid/*"
+      stat-view-servlet.allow: "127.0.0.1, *"
+      stat-view-servlet.login-username: admin
+      stat-view-servlet.login-password: 123456
+    # Hikari连接池的配置  type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: HikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+  #键表语句
+  #    schema:
+  #      - classpath:sql/userSchema.sql
+  #sql crud语句
+  #    data:
+  #      - classpath:sql/userData.sql
+  #表示任何类型数据库都进行数据库初始化
+  #    initialization-mode: always
+
+  #jpa配置
+  jpa:
+    hibernate:
+      #更新或者创建数据表结构
+      ddl-auto: update
+    #控制台显示SQL
+    show-sql: true
+    open-in-view: false
+
+#配置文件版
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml   #mybatis配置文件所在路径
+  mapper-locations: classpath:mybatis/mapper/**/*.xml     #mapper映射文件
+#  type-aliases-package: com.zzz.springcloud.bean         #所有Entity别名类所在包
+#驼峰命名法的配置
+#mybatis:
+#  configuration:
+#    map-underscore-to-camel-case: true
+
+
+eureka:
+  instance:
+    #    instance-id: #自定义服务名称信息，后台管理界面status处的名字,默认电脑主机名:8001
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: false #生产端不需要拉取服务
+    service-url:
+      defaultZone: http://root:123456@eurekaserver01:8761/eureka/
+
+#暴露actuator监控访问点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+info:
+  app.name: spring-cloud-eureka-provider
+  company.name: www.zzz.com
+
+
+---
+
+spring:
+  profiles: provider01
+
+server:
+  port: 9001
+
+
+---
+
+spring:
+  profiles: provider02
+
+server:
+  port: 9002
+
+
+---
+

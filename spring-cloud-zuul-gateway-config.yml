@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: spring-cloud-zuul-gateway
+
+server:
+  port: 8801
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+    service-url:
+      defaultZone: http://root:123456@localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "routes"
+
+zuul:
+  prefix: /proxy #添加路由前缀
+  ignored-services: "*" #关闭默认路由，阻止其他路由地址的访问，只允许访问routes中设定的路由地址,默认自动配置的路由以服务名称为匹配路径
+  routes: #给服务配置路由
+    eureka-client-consumer-user-01: #消费者${spring.application.name}，客户端访问的入口模块
+      path: /consumer/** #默认路由为/eureka-client-consumer-user-01/**
+  add-host-header:
+
+hystrix:
+  command: #用于控制HystrixCommand的行为
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000 #配置HystrixCommand执行的超时时间，执行超过该时间会进行服务降级处理
+
+ribbon: #全局配置
+  ConnectTimeout: 1000 #服务请求连接超时时间（毫秒）
+  ReadTimeout: 3000 #服务请求处理超时时间（毫秒）
+

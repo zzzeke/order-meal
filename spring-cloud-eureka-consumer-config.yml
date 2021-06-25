@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: eureka-consumer
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true #不注册消费者自身到注册中心
+    fetch-registry: true
+    service-url:
+      defaultZone: http://root:123456@eurekaserver01:8761/eureka/
+
+#开启openfeign断路器
+feign:
+  circuitbreaker:
+    enabled: true
+
+#暴露actuator监控访问点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+---
+
+spring:
+  profiles: consumer01
+
+server:
+  port: 8001
+
+
+---
+
+spring:
+  profiles: consumer02
+
+server:
+  port: 8002
+
+
+---

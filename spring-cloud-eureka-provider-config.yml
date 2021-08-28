@@ -69,6 +69,12 @@ spring:
     show-sql: true
     open-in-view: false
 
+  #配置Redis连接信息
+  redis:
+    host: 192.168.15.130
+    port: 6379
+    password:
+
   #mailSender配置
   mail:
     username: zhao5006@gmail.com

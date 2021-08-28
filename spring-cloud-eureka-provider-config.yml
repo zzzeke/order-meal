@@ -86,6 +86,7 @@ spring:
         smtp:
           ssl:
             enable: true
+    port: 465
 
 
 #配置文件版

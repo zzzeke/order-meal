@@ -75,18 +75,6 @@ spring:
     port: 6379
     password:
 
-  #mailSender配置
-  mail:
-    username: zhao5006@gmail.com
-    password: 86881879
-    host: smtp.gmail.com
-    #    port: 465
-    properties:
-      mail:
-        smtp:
-          ssl:
-            enable: true
-
 
 #配置文件版
 mybatis:
